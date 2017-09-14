@@ -8,9 +8,11 @@ import (
 
 func main() {
 	//http.HandleFunc("/data/", NotFoundHandler)
-	lightmvc.Router("/data/", &controllers.Webapi_controller{})
+	lightmvc.Router("/data/","Insert", &controllers.Webapi_controller{})
 	http.ListenAndServe(":8098", nil)
 }
+
+
 
 // func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 // 	t, err := template.ParseFiles("template/html/hello.html")

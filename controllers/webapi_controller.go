@@ -15,7 +15,7 @@ type insert_stockinfo_reulst struct {
 	sum               int
 }
 
-func (this *Webapi_controller) Handle_rquest(w http.ResponseWriter, r *http.Request) {
+func (this *Webapi_controller) Insert_action(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	log.Println("handel request")
 	var action_reulst = insert_stockinfo_reulst{}
