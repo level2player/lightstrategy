@@ -2,27 +2,32 @@ package controllers
 
 import (
 	"encoding/json"
-	"lightstrategy/lightmvc"
-	"log"
 	"net/http"
 )
 
-type Webapi_controller struct {
-	lightmvc.ControllerInterface
+type WebapiController struct {
 }
-type insert_stockinfo_reulst struct {
+
+type insertStockinfoReulst struct {
 	is_insert_success bool
 	sum               int
 }
 
-func (this *Webapi_controller) Insert_action(w http.ResponseWriter, r *http.Request) {
+func (webapiController WebapiController) Get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
-	log.Println("handel request")
-	var action_reulst = insert_stockinfo_reulst{}
-	action_reulst.is_insert_success = true
-	action_reulst.sum = 1
-	OutputJson(w, action_reulst)
+	var actionReulst = insertStockinfoReulst{}
+	actionReulst.is_insert_success = true
+	actionReulst.sum = 1
+	OutputJson(w, actionReulst)
 }
+func (webapiController WebapiController) Post(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	var actionReulst = insertStockinfoReulst{}
+	actionReulst.is_insert_success = true
+	actionReulst.sum = 1
+	OutputJson(w, actionReulst)
+}
+
 func OutputJson(w http.ResponseWriter, output_object interface{}) {
 	b, err := json.Marshal(output_object)
 	if err != nil {

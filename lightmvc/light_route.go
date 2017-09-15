@@ -1,28 +1,38 @@
 package lightmvc
 
 import (
+	"html/template"
+	"log"
 	"net/http"
 	"reflect"
-	"log"
-	)
+	"strings"
+)
 
-
-
-type ControllerInterface interface {
-	Handle_rquest(w http.ResponseWriter, r *http.Request)
-}
-
-func Router(pattern string, action_name string,Controller ControllerInterface) {
+func Router(pattern string) {
 	http.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
-		log.Println("a")
-		method_value:=reflect.ValueOf(&Controller).MethodByName(action_name+"_action")
-		if method_value.IsValid() {
-			params := make([]reflect.Value, 1)                
-			params[0] = reflect.ValueOf(w)                   
-			params[1] = reflect.ValueOf(r)  
-			log.Println("b")
-			method_value.Call(params)
+		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
+		controller := Controllerdic[parts[len(parts)-1]]
+		if controller != nil {
+			v := reflect.ValueOf(controller.(ControllerInterface))
+			method := v.MethodByName(methodlist[r.Method])
+			if method.IsValid() {
+				parms := []reflect.Value{reflect.ValueOf(w), reflect.ValueOf(r)}
+				method.Call(parms)
+			}
+		} else {
+			t, err := template.ParseFiles("template/html/notfound.html")
+			if err != nil {
+				log.Println(err)
+			}
+			t.Execute(w, nil)
 		}
 	})
 }
 
+var methodlist map[string]string
+
+func init() {
+	methodlist = make(map[string]string)
+	methodlist["GET"] = "Get"
+	methodlist["POST"] = "Post"
+}
