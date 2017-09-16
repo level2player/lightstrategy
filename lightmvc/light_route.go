@@ -10,6 +10,7 @@ import (
 
 func Router(pattern string) {
 	http.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
+		log.Println("recive msg...")
 		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
 		controller := Controllerdic[parts[len(parts)-1]]
 		if controller != nil {

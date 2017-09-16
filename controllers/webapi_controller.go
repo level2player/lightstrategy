@@ -2,36 +2,33 @@ package controllers
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"lightstrategy/core"
+	"lightstrategy/models"
+	"log"
 	"net/http"
 )
 
 type WebapiController struct {
 }
 
-type insertStockinfoReulst struct {
-	is_insert_success bool
-	sum               int
-}
-
 func (webapiController WebapiController) Get(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
-	var actionReulst = insertStockinfoReulst{}
-	actionReulst.is_insert_success = true
-	actionReulst.sum = 1
-	OutputJson(w, actionReulst)
+	var actionReulst = models.InsertStockinfoReulst{}
+	actionReulst.IsInsertSuccess = false
+	actionReulst.InsertSum = 0
+	core.OutputJson(w, actionReulst)
 }
 func (webapiController WebapiController) Post(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
-	var actionReulst = insertStockinfoReulst{}
-	actionReulst.is_insert_success = true
-	actionReulst.sum = 1
-	OutputJson(w, actionReulst)
-}
-
-func OutputJson(w http.ResponseWriter, output_object interface{}) {
-	b, err := json.Marshal(output_object)
+	simpleStockinfo := models.SimpleStockinfo{}
+	content, _ := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
+	err := json.Unmarshal(content, &simpleStockinfo)
 	if err != nil {
-		return
+		log.Println(err)
 	}
-	w.Write(b)
+	log.Println(simpleStockinfo)
+	var actionReulst = models.InsertStockinfoReulst{}
+	actionReulst.IsInsertSuccess = true
+	actionReulst.InsertSum = 1
+	core.OutputJson(w, actionReulst)
 }
