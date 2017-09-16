@@ -23,12 +23,15 @@ func (webapiController WebapiController) Post(w http.ResponseWriter, r *http.Req
 	content, _ := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 	err := json.Unmarshal(content, &simpleStockinfo)
+	var actionReulst = models.InsertStockinfoReulst{}
 	if err != nil {
+		actionReulst.IsInsertSuccess = false
+		actionReulst.InsertSum = 0
 		log.Println(err)
+	} else {
+		actionReulst.IsInsertSuccess = true
+		actionReulst.InsertSum = 1
 	}
 	log.Println(simpleStockinfo)
-	var actionReulst = models.InsertStockinfoReulst{}
-	actionReulst.IsInsertSuccess = true
-	actionReulst.InsertSum = 1
 	core.OutputJson(w, actionReulst)
 }
