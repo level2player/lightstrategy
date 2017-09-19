@@ -9,10 +9,9 @@
             $("#btn_post").click(function(){
                 $("#p_status").hide()
                 var request = {   
-                    exchange_type:'SHSE',
-                    stock_code: '600570',  
+                    trade_date: '20160221',  
+                    stock_code: '600571',  
                     stock_name: '恒生电子',
-                    his_data:[{trade_date: '20160221',  
                     close_price:51.34,
                     high_price:52.5,
                     low_price:50.28,
@@ -24,20 +23,7 @@
                     trade_volume:32761464,
                     turnover:1688326732,
                     market_value:31718117941.2,
-                    circulate_marketValue:31718117941.2},
-                    {trade_date: '20160222',  
-                    close_price:51.34,
-                    high_price:52.5,
-                    low_price:50.28,
-                    open_price:51.88,
-                    preClolse_price:50.39,
-                    updown_over:0.95,
-                    updown_range:1.8853,
-                    turnove_rate:5.3029,
-                    trade_volume:32761464,
-                    turnover:1688326732,
-                    market_value:31718117941.2,
-                    circulate_marketValue:31718117941.2}]
+                    circulate_marketValue:31718117941.2
                 };  
                 var encoded = $.toJSON(request)
                 var jsonStr = encoded;
@@ -48,11 +34,7 @@
                     data:jsonStr,
                     dataType : 'json',  
                     success :function(data,status,xhr){
-                        var msg = "";
-                        msg = msg + "is_insert_success="+data['is_insert_success']+"\r\n";
-                        msg = msg + "insert_sum="+data['insert_sum']+"\r\n";
-                        msg = msg + "error_info="+data['error_info']+"\r\n";
-                        alert(msg)
+                        alert(data['is_insert_success'])
                     },
                     error :function(xhr, error, exception){
                         alert("error");
