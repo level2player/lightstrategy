@@ -32,10 +32,10 @@ func (StockInfo *SimpleStockinfo) InsertSimpleStockInfo() error {
 	c := domain.Session.DB("stockdb").C("simplestocklist")
 	err := c.Insert(&StockInfo)
 	if err != nil {
-		log.Println("mgo insert err=:" + err.Error())
+		log.Println("mgo insert, err=:" + err.Error())
 		return err
 	}
-	log.Println("insert success.............")
+	log.Println("Insert mongo suc, StockCode=" + StockInfo.StockCode)
 	return nil
 }
 func FindRecord(Key string, Value string) interface{} {
