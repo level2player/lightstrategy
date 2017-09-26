@@ -8,16 +8,16 @@ import (
 	"net/http"
 )
 
-type WebapiController struct {
+type WebapInsertStockInfoController struct {
 }
 
-func (webapiController WebapiController) Get(w http.ResponseWriter, r *http.Request) {
+func (webapiController WebapInsertStockInfoController) Get(w http.ResponseWriter, r *http.Request) {
 	var actionReulst = models.InsertStockinfoReulst{}
 	actionReulst.IsInsertSuccess = false
 	actionReulst.InsertSum = 0
 	core.OutputJson(w, actionReulst)
 }
-func (webapiController WebapiController) Post(w http.ResponseWriter, r *http.Request) {
+func (webapiController WebapInsertStockInfoController) Post(w http.ResponseWriter, r *http.Request) {
 	simpleStockinfo := models.SimpleStockinfo{}
 	content, _ := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()

@@ -6,11 +6,32 @@
  
 
     $(document).ready(function(){
+            $("#btn_get_stockinfo").click(function(){
+                $("#p_status").text("execute...")
+                $.ajax({
+                    url:'http://www.zenyu.site/data/webapifindstockinfo',
+                    type:'GET',
+                    data:{stock_code: "300581", exchange_type: "CN"} ,
+                    success :function(data,status,xhr){
+                        $("#p_status").text("completed..")
+                        var msg = "";
+                        msg = msg + "stock_code="+data['stock_code']+"\r\n";
+                        msg = msg + "exchangetype="+data['exchange_type']+"\r\n";
+                        msg = msg + "stockname="+data['stock_name']+"\r\n";
+                        alert(msg)
+                    },
+                    error :function(xhr, error, exception){
+                        alert("error");
+                    }
+                });
+            });
+
+
             $("#btn_post").click(function(){
-                $("#p_status").hide()
+                $("#p_status").text("execute...")
                 var request = {   
                     exchange_type:'SHSE',
-                    stock_code: '600570',  
+                    stock_code: '600571',  
                     stock_name: '恒生电子',
                     his_data:[{trade_date: '20160221',  
                     close_price:51.34,
@@ -43,11 +64,12 @@
                 var jsonStr = encoded;
 
                 $.ajax({
-                    url:'http://www.zenyu.site/data/webapi',
+                    url:'http://www.zenyu.site/data/webapinsertstockinfo',
                     type:'POST',
                     data:jsonStr,
                     dataType : 'json',  
                     success :function(data,status,xhr){
+                        $("#p_status").text("completed..")
                         var msg = "";
                         msg = msg + "is_insert_success="+data['is_insert_success']+"\r\n";
                         msg = msg + "insert_sum="+data['insert_sum']+"\r\n";
@@ -66,6 +88,7 @@
     <body>
     <p id="p_status">pls click post.</p>
     <button id="btn_post" name="btn">post</button>
+    <button id="btn_get_stockinfo" name="btn_get_stockinfo">get_stockinfo</button>
     </body>
     
     </html> 
