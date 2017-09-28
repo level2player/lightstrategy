@@ -6,11 +6,13 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"time"
 )
 
 func Router(pattern string) {
 	http.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 		log.Println("recive msg...")
+		timeNow := time.Now()
 		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
 		controller := Controllerdic[parts[len(parts)-1]]
 		if controller != nil {
@@ -27,6 +29,10 @@ func Router(pattern string) {
 			}
 			t.Execute(w, nil)
 		}
+		defer func() {
+			log.Printf("execute time:%s", time.Since(timeNow))
+			r.Body.Close()
+		}()
 	})
 }
 

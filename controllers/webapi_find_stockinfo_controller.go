@@ -14,8 +14,8 @@ func (webapiController WebapiFindStockInfoController) Get(w http.ResponseWriter,
 	stockcode := r.Form["stock_code"]
 	exchangetype := r.Form["exchange_type"]
 	simpleStockinfo := models.SimpleStockinfo{}
-	defer r.Body.Close()
-	core.OutputJson(w, simpleStockinfo.FindStockRecord(stockcode[0], exchangetype[0]))
+	simpleStockinfo.FindStockRecord(stockcode[0], exchangetype[0])
+	core.OutputJson(w, simpleStockinfo)
 }
 func (webapiController WebapiFindStockInfoController) Post(w http.ResponseWriter, r *http.Request) {
 

@@ -38,11 +38,19 @@ func (StockInfo *SimpleStockinfo) InsertSimpleStockInfo() error {
 	log.Println("Insert mongo suc, StockCode=" + StockInfo.StockCode)
 	return nil
 }
-func (StockInfo *SimpleStockinfo) FindStockRecord(StockCode string, ExchangeType string) interface{} {
+
+func (StockInfo *SimpleStockinfo) FindStockRecord(StockCode string, ExchangeType string) {
 	c := domain.Session.DB("stockdb").C("simplestocklist")
 	err := c.Find(bson.M{"stockcode": StockCode, "exchangetype": ExchangeType}).One(&StockInfo)
 	if err != nil {
 		log.Println("mgo find err=:" + err.Error())
 	}
-	return StockInfo
+}
+func GetStockRecordCount() int {
+	c := domain.Session.DB("stockdb").C("simplestocklist")
+	count, err := c.Count()
+	if err != nil {
+		log.Println("mgo find err=:" + err.Error())
+	}
+	return count
 }
