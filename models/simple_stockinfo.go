@@ -46,6 +46,15 @@ func (StockInfo *SimpleStockinfo) FindStockRecord(StockCode string, ExchangeType
 		log.Println("mgo find err=:" + err.Error())
 	}
 }
+
+func (StockInfo *SimpleStockinfo) FindStockHisDate(StockCode string, ExchangeType string, tradedate int) {
+	c := domain.Session.DB("stockdb").C("simplestocklist")
+	err := c.Find(bson.M{"stockcode": StockCode, "exchangetype": ExchangeType}).Select(bson.M{"stockcode": 1, "exchangetype": 1, "stockname": 1, "hisdata": bson.M{"$elemMatch": bson.M{"tradedate": tradedate}}}).One(&StockInfo)
+	if err != nil {
+		log.Println("mgo find err=:" + err.Error())
+	}
+}
+
 func GetStockRecordCount() int {
 	c := domain.Session.DB("stockdb").C("simplestocklist")
 	count, err := c.Count()

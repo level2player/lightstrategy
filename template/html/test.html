@@ -11,7 +11,7 @@
                 $.ajax({
                     url:'http://www.zenyu.site/data/webapifindstockinfo',
                     type:'GET',
-                    data:{stock_code: "600570", exchange_type: "CN"} ,
+                    data:{stock_code: "600570", exchange_type: "CN",trade_date:20160801} ,
                     success :function(data,status,xhr){
                         $("#p_status").text("completed..")
                         var msg = "";

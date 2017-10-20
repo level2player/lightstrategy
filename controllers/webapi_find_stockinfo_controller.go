@@ -4,6 +4,7 @@ import (
 	"lightstrategy/core"
 	"lightstrategy/models"
 	"net/http"
+	"strconv"
 )
 
 type WebapiFindStockInfoController struct {
@@ -11,11 +12,17 @@ type WebapiFindStockInfoController struct {
 
 func (webapiController WebapiFindStockInfoController) Get(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	stockcode := r.Form["stock_code"]
-	exchangetype := r.Form["exchange_type"]
+	stockcode := r.FormValue("stock_code")
+	exchangetype := r.FormValue("exchange_type")
+	tradedate, err := strconv.Atoi(r.FormValue("trade_date"))
 	simpleStockinfo := models.SimpleStockinfo{}
-	simpleStockinfo.FindStockRecord(stockcode[0], exchangetype[0])
+	if err != nil {
+		simpleStockinfo.FindStockRecord(stockcode, exchangetype)
+	} else {
+		simpleStockinfo.FindStockHisDate(stockcode, exchangetype, tradedate)
+	}
 	core.OutputJson(w, simpleStockinfo)
+
 }
 func (webapiController WebapiFindStockInfoController) Post(w http.ResponseWriter, r *http.Request) {
 
