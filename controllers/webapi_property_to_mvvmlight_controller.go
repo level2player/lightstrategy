@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"lightstrategy/core"
@@ -50,6 +49,6 @@ func (webapiController WebapiPropertyToMvvmlightController) Post(w http.Response
 	} else {
 		conversionResult.IsOk = false
 	}
-	fmt.Printf("转换结果:\n\r %s \n\r", conversionResult.ConversionsContent)
+	log.Printf("转换结果:\n\r %s \n\r", conversionResult.ConversionsContent)
 	core.OutputJson(w, conversionResult)
 }
