@@ -49,6 +49,6 @@ func (webapiController WebapiPropertyToMvvmlightController) Post(w http.Response
 	} else {
 		conversionResult.IsOk = false
 	}
-	log.Printf("转换结果:\n\r %s \n\r", conversionResult.ConversionsContent)
+	log.Printf("convert reulst:\n\r %s \n\r", conversionResult.ConversionsContent)
 	core.OutputJson(w, conversionResult)
 }

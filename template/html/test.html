@@ -11,13 +11,14 @@
                 $.ajax({
                     url:'http://www.zenyu.site/data/webapifindstockinfo',
                     type:'GET',
-                    data:{stock_code: "600570", exchange_type: "CN",trade_date:20160801} ,
+                    data:{stock_code: "600570", exchange_type: "CN",trade_date:20170922} ,
                     success :function(data,status,xhr){
                         $("#p_status").text("completed..")
                         var msg = "";
                         msg = msg + "stock_code="+data['stock_code']+"\r\n";
                         msg = msg + "exchangetype="+data['exchange_type']+"\r\n";
                         msg = msg + "stockname="+data['stock_name']+"\r\n";
+						 msg = msg + "open_price="+data['open_price']+"\r\n";
                         alert(msg)
                     },
                     error :function(xhr, error, exception){
@@ -26,8 +27,25 @@
                 });
             });
 
+			 $("#btn_get_tradelog").click(function(){
+                $("#p_status").text("execute...")
+                $.ajax({
+                    url:'http://www.zenyu.site/data/webapihktradett',
+                    type:'GET',
+                    data:{stock_code: "700",action_in:0} ,
+                    success :function(data,status,xhr){
+                        $("#p_status").text("completed..")
+                        var msg = "";
+                        msg = msg + "stock_code="+data['stock_code']+"\r\n";
+                        alert(msg);
+                    },
+                    error :function(xhr, error, exception){
+                        alert("error");
+                    }
+                });
+            });
 
-            $("#btn_post").click(function(){
+            $("btn_get_tradelog").click(function(){
                 $("#p_status").text("execute...")
                 var request = {   
                     exchange_type:'SHSE',
@@ -89,6 +107,7 @@
     <p id="p_status">pls click post.</p>
     <button id="btn_post" name="btn">post</button>
     <button id="btn_get_stockinfo" name="btn_get_stockinfo">get_stockinfo</button>
+	<button id="btn_get_tradelog" name="btn_get_tradelog">get_tradelog</button>
     </body>
     
     </html> 

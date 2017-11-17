@@ -11,6 +11,7 @@ func main() {
 	lightmvc.RegisterController("webapinsertstockinfo", controllers.WebapInsertStockInfoController{})
 	lightmvc.RegisterController("webapifindstockinfo", controllers.WebapiFindStockInfoController{})
 	lightmvc.RegisterController("webapipropertytomvvmlight", controllers.WebapiPropertyToMvvmlightController{})
+	lightmvc.RegisterController("webapihktradett", controllers.WebapiHKTradettController{})
 	lightmvc.Router("/")
 	err := http.ListenAndServe(":8098", nil)
 	if err != nil {

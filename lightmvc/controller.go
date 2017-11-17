@@ -1,6 +1,7 @@
 package lightmvc
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -16,8 +17,10 @@ func RegisterController(key string, obj interface{}) bool {
 	if !isexist {
 		Controllerdic[key] = obj
 	} else {
+		log.Println(key + " Register fail")
 		return false
 	}
+	log.Println(key + " Register Succeed")
 	return true
 }
 func init() {

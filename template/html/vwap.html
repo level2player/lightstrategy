@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>VWAP</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.json-2.3.min.js"></script>
+    <script type="text/javascript" src="js/Chart.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+            $("#btn_get_stockinfo").click(function(){
+                $("#p_status").text("execute...")
+                $.ajax({
+                    url:'http://www.zenyu.site/data/webapifindstockinfo',
+                    type:'GET',
+                    dataType:"json",
+                    data:{stock_code: "600570", exchange_type: "CN"} ,
+                    success :function(data,status,xhr){
+                        $("#p_status").text("completed..")
+                        LoadWapChart(data['stock_code'],data['exchange_type'],data['his_data']);
+                    },
+                    error :function(xhr, error, exception){
+                        alert("error");
+                    }
+                });
+            });
+
+
+			 $("#btn_get_tradelog").click(function(){
+                $("#p_status").text("execute...")
+                $.ajax({
+                    url:'http://www.zenyu.site/data/webapihktradett',
+                    type:'GET',
+                    dataType:"json",
+                     data:{stock_code: "700",action_in:0} ,
+                    success :function(data,status,xhr){
+                        $("#p_status").text("completed..")
+                        LoadWapChart(data['stock_code'],data['exchange_type'],data['his_data']);
+                    },
+                    error :function(xhr, error, exception){
+                        alert("error");
+                    }
+                });
+            });
+
+        });
+
+        function LoadWapChart(){
+                var tradedates = new Array();
+                var highprices = new Array();
+                var lowprices = new Array();
+				var vwaprice=new Array();
+                for (i=0;i<arguments[2].length;i++){
+                    tradedates[i]=arguments[2][i].trade_date;
+                    highprices[i]=arguments[2][i].high_price;
+                    lowprices[i]=arguments[2][i].low_price;
+
+					vwaprice[i]=(highprices[i]+lowprices[i])/2;
+                }
+				tradedates.reverse();
+				highprices.reverse();
+				lowprices.reverse();
+				vwaprice.reverse();
+                var ctx = document.getElementById("myChart").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels : tradedates,
+                        datasets : [
+                            {
+                                fillColor : "rgba(220,220,220,0.5)",
+                                strokeColor : "rgba(220,220,220,1)",
+                                pointColor : "rgba(220,220,220,1)",
+                                pointStrokeColor : "#fff",
+                                data : highprices
+                            },
+                            {
+                                fillColor : "rgba(151,187,205,0.5)",
+                                strokeColor : "rgba(151,187,205,1)",
+                                pointColor : "rgba(151,187,205,1)",
+                                pointStrokeColor : "#FF7F00",
+                                data : lowprices
+                            },
+							{
+                                fillColor : "rgba(100,187,205,0.5)",
+                                strokeColor : "rgba(100,187,205,1)",
+                                pointColor : "rgba(100,187,205,1)",
+                                pointStrokeColor : "#CAFF70",
+                                data : vwaprice
+                            }
+                        ]
+                    },
+                    options: {
+                        animation: {
+                            duration: 0, // general animation time
+                        },
+                        hover: {
+                            animationDuration: 0, // duration of animations when hovering an item
+                        },
+                        responsiveAnimationDuration: 0, // animation duration after a resize
+                    }
+                
+                });
+    }
+    </script>
+    </head>
+    <body>
+    <button id="btn_get_stockinfo" name="btn_get_stockinfo" type="button">LoadWapChart</button>
+	<button id="btn_get_tradelog" name="btn_get_tradelog" type="button">LoadtradelogChart</button>
+	<div width="200" height="200" >
+	 <canvas id="myChart" ></canvas>
+	</div>
+   
+    <script>
+
+        </script>
+    </body>
+   
+    </html> 
