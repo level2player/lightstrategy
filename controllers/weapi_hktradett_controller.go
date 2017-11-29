@@ -24,7 +24,6 @@ func (webapiController WebapiHKTradettController) Get(w http.ResponseWriter, r *
 			stock_code := r.FormValue("stock_code")
 			hkTradett := models.HKTradett{}
 			hkTradett.FindHKTradett(stock_code)
-			hkTradett.StockCode = stock_code
 			core.OutputJson(w, hkTradett)
 		}
 	}

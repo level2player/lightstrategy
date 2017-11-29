@@ -4,20 +4,23 @@ import (
 	"lightstrategy/domain"
 	"log"
 
+	cache "github.com/patrickmn/go-cache"
 	"gopkg.in/mgo.v2/bson"
 )
 
+type TradeLog struct {
+	TickerId   int     `json:"ticker_id"`
+	Cancelled  string  `json:"cancelled"`
+	TradePrice float64 `json:"price"`
+	AggrQty    int     `json:"aggr_qty"`
+	TradeTime  string  `json:"trade_time"`
+	TradeType  int     `json:"trade_type"`
+}
+
 //港股交易日志
 type HKTradett struct {
-	StockCode string `json:"stock_code"`
-	TradeLog  []struct {
-		TickerId   int     `json:"ticker_id"`
-		Cancelled  string  `json:"cancelled"`
-		TradePrice float64 `json:"price"`
-		AggrQty    int     `json:"aggr_qty"`
-		TradeTime  string  `json:"trade_time"`
-		TradeType  int     `json:"trade_type"`
-	} `json:"trade_Log"`
+	StockCode string     `json:"stock_code"`
+	TradeLog  []TradeLog `json:"trade_Log"`
 }
 
 func (hkTradett *HKTradett) InsertHKTradett() error {
@@ -32,12 +35,18 @@ func (hkTradett *HKTradett) InsertHKTradett() error {
 }
 
 func (hkTradett *HKTradett) FindHKTradett(stock_code string) error {
-	c := domain.Session.DB("stockdb").C("hktradett")
-	err := c.Find(bson.M{"stockcode": stock_code}).One(&hkTradett)
-
-	if err != nil {
-		log.Println("mgo find err=:" + err.Error())
-		return err
+	hkTradett.StockCode = stock_code
+	if x, found := domain.FindCache(stock_code); found {
+		hkTradett.TradeLog = x.(*HKTradett).TradeLog
+		return nil
+	} else {
+		c := domain.Session.DB("stockdb").C("hktradett")
+		err := c.Find(bson.M{"stockcode": stock_code}).One(hkTradett)
+		if err != nil {
+			log.Println("mgo find err=:" + err.Error())
+			return err
+		}
+		domain.InsertCache(stock_code, hkTradett, cache.DefaultExpiration)
+		return nil
 	}
-	return nil
 }
