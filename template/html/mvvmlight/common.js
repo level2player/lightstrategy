@@ -14,7 +14,7 @@ function initAnalytics()
 
 $(function()
 {
-	var emptyInputMsg = "Paste C# here";
+	var emptyInputMsg = "public char EntrustProp { get; set; }";
 	var emptyOutputMsg = "MvvmlightProperty will appear here";
 	var formattedEmptyInputMsg = '<span style="color: #777;">'+emptyInputMsg+'</span>';
 	var formattedEmptyOutputMsg = '<span style="color: #777;">'+emptyOutputMsg+'</span>';
@@ -112,6 +112,7 @@ $(function()
 	});
 	$("#btn_post").click(function(){
 			var codetext=$("#input").text();
+			$('#btn_post').toggleClass("btn loading");
 			$.ajax({
 			url:'http://www.zenyu.site/data/webapipropertytomvvmlight',
 			dataType:'json',
@@ -125,9 +126,11 @@ $(function()
 				{
 					$("#output").text("转换失败！！！")
 				}
+				$('#btn_post').toggleClass("btn loading");
 			},
 			error :function(xhr, error, exception){
 				$("#output").text("转换失败！！！")
+				$('#btn_post').toggleClass("btn");
 			}
 		});
 	});
