@@ -1,18 +1,12 @@
 package domain
 
 import (
-	"log"
 	"time"
 
 	cache "github.com/patrickmn/go-cache"
 )
 
-var GlobalCache *cache.Cache
-
-func init() {
-	GlobalCache = cache.New(10*time.Minute, 10*time.Minute)
-	log.Println("init globalCache")
-}
+var GlobalCache *cache.Cache = cache.New(10*time.Minute, 10*time.Minute)
 
 func InsertCache(k string, x interface{}, d time.Duration) {
 	GlobalCache.Set(k, x, d)

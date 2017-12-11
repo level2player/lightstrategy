@@ -11,9 +11,11 @@ const url = "127.0.0.1:27017"
 var Session *mgo.Session
 
 func init() {
-	var conncetErr error
-	Session, conncetErr = mgo.Dial(url)
-	if conncetErr != nil {
+	session, err := mgo.Dial(url)
+	if err != nil {
 		log.Println("mgo connect err")
+	} else {
+		Session = session
+		log.Println("mgo connect sucess")
 	}
 }

@@ -11,7 +11,7 @@ import (
 
 func Router(pattern string) {
 	http.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
-		log.Println("recive msg...")
+		log.Printf("recive msg...URL=%s,HOST=%s", r.URL.RequestURI(), r.Host)
 		timeNow := time.Now()
 		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
 		controller := Controllerdic[parts[len(parts)-1]]
@@ -36,10 +36,9 @@ func Router(pattern string) {
 	})
 }
 
-var methodlist map[string]string
+var methodlist = make(map[string]string)
 
 func init() {
-	methodlist = make(map[string]string)
 	methodlist["GET"] = "Get"
 	methodlist["POST"] = "Post"
 }

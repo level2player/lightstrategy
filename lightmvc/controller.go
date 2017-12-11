@@ -10,7 +10,7 @@ type ControllerInterface interface {
 	Post(w http.ResponseWriter, r *http.Request)
 }
 
-var Controllerdic map[string]interface{}
+var Controllerdic = make(map[string]interface{})
 
 func RegisterController(key string, obj interface{}) bool {
 	_, isexist := Controllerdic[key]
@@ -22,7 +22,4 @@ func RegisterController(key string, obj interface{}) bool {
 	}
 	log.Println(key + " Register Succeed")
 	return true
-}
-func init() {
-	Controllerdic = make(map[string]interface{})
 }
