@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"strings"
+	//"fmt"
 )
 
 type MvvmlightProperty struct {
@@ -24,16 +25,21 @@ func ProcessData(ProcessDataText string) (MvvmlightProperty, error) {
 	tmptext2 = strings.Replace(tmptext2, "{ get; set; }", "", strings.Count(tmptext, "{ get; set; }"))
 	arry := strings.Fields(tmptext2)
 	reulst := MvvmlightProperty{}
-	if len(arry) == 3 {
-		reulst.PropertyRemark = arry[0]
-		reulst.PropertyType = arry[1]
-		reulst.PropertyName = arry[2]
-	} else if len(arry) == 2 {
-		reulst.PropertyType = arry[0]
-		reulst.PropertyName = arry[1]
 
-	} else {
+	if len(arry)==2{
+		reulst.PropertyType=arry[len(arry)-2]
+		reulst.PropertyName=arry[len(arry)-1]
+	}else if len(arry)==3{
+		reulst.PropertyRemark = arry[len(arry)-3]
+		reulst.PropertyType=arry[len(arry)-2]
+		reulst.PropertyName=arry[len(arry)-1]
+	}else if len(arry)>3{
+		reulst.PropertyRemark = " "
+		reulst.PropertyType=arry[len(arry)-2]
+		reulst.PropertyName=arry[len(arry)-1]
+	}else {
 		return reulst, errors.New("ProcessData error")
 	}
+
 	return reulst, nil
 }

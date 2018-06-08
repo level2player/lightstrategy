@@ -17,7 +17,7 @@ type TradeLog struct {
 	TradeType  int     `json:"trade_type"`
 }
 
-//港股交易日志
+
 type HKTradett struct {
 	StockCode string     `json:"stock_code"`
 	TradeLog  []TradeLog `json:"trade_Log"`
